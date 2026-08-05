@@ -1,0 +1,28 @@
+package codecluster.notificationservice.controller;
+
+import codecluster.notificationservice.dto.SendMailDto;
+import codecluster.notificationservice.dto.SentMailDto;
+import codecluster.notificationservice.service.MailerService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/mail")
+public class MailController {
+
+    @Autowired
+    private MailerService mailerService;
+
+    @PostMapping("/send")
+    public ResponseEntity<SentMailDto> sendMail(
+            @Valid @RequestBody SendMailDto dto) {
+
+        SentMailDto response = mailerService.trySend(dto);
+        return ResponseEntity.ok(response);
+    }
+}
